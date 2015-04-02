@@ -1,0 +1,254 @@
+digraph {
+
+    // Features and their deps
+    // ------------------------
+
+    node [shape=box, style="filled,rounded", colorscheme=pastel19];
+    edge [color=gray];
+
+    // Core architecture features
+
+    { node [fillcolor=1, color=1];
+
+        core_HAL [label="Hypervisor Abstraction Layer"];
+
+        hvisor_Xen44 [label="Xen 4.4"];
+        core_HAL -> hvisor_Xen44;
+
+        core_qrexec2 [label="New Qubes RPC (qrexec2)"];
+        hvisor_Xen44 -> core_qrexec2;
+
+        // Not-yet-implemented features follow...
+        // ------------------------------------------
+        node [style="bold,rounded", penwidth=3];
+
+        core_coreng [label="New Qubes Core (core3)"];
+        core_HAL -> core_coreng;
+
+        core_AdminAPI [label="Admin API"];
+        core_coreng -> core_AdminAPI;
+
+        core_qrexec_policyng [label="More flexible qrexec policy"];
+        core_coreng -> core_qrexec_policyng;
+
+        core_mgmt [label="Management/Pre-configuration Infrastructure"];
+
+        preconf_install [label="Pre-configuration support (install time)"];
+        core_mgmt -> preconf_install;
+
+        core_mgmt_vm [label="(Semi-trusted) Management VM(s)"];
+        core_AdminAPI -> core_mgmt_vm;
+        core_qrexec_policyng -> core_mgmt_vm;
+        core_mgmt -> core_mgmt_vm;
+
+        core_UEFI_boot [label="UEFI Boot"];
+        hvisor_Xen44 -> core_UEFI_boot;
+
+        // Not-yet-fully-decided features follow...
+        // ------------------------------------------
+        node [style="dashed,rounded", penwidth=2];
+
+        core_GPUpassthru [label="GPU-passthru"];
+
+        core_GUIdom [label="Separate GUI domain"];
+        core_AdminAPI -> core_GUIdom; 
+        core_GPUpassthru -> core_GUIdom;
+
+        hvisor_other [label="Alternative hypervisors/VMMs"];
+        core_HAL -> hvisor_other;
+
+    }
+
+    // Builder, testing, infrastructure, and distribution process
+
+    { node [fillcolor=2, color=2];
+
+        builder_compartmentalization [label="Compartmentalized Builder"];    
+
+        builder_defensive_template_packaging 
+            [label="Defensive Template Packaging"];
+
+        // Not-yet-implemented features follow...
+        // ------------------------------------------
+        node [style="bold,rounded", penwidth=3];
+
+        builder_defensive_template_installation
+            [label="Defensive Templates Installation"];
+
+        // Not-yet-fully-decided features follow...
+        // ------------------------------------------
+        node [style="dashed,rounded", penwidth=2];
+
+        builder_deterministic_pkgs [label="Deterministic Qubes Pkgs/Updates"];
+
+        builder_deterministic_dom0_distro [label="Deterministic Distro for Dom0"];
+
+        builder_deterministic_vm_distros [
+            label="Deterministic Distros for (select) VMs"];
+
+        builder_deterministic_iso [label="Deterministic ISOs"];
+        builder_deterministic_dom0_distro -> builder_deterministic_iso;
+        builder_deterministic_vm_distros -> builder_deterministic_iso [style=dotted];
+        builder_deterministic_pkgs -> builder_deterministic_iso;
+
+        builder_multisign [
+            label="Multi Signature Scheme\n(M of N sigs required)"];
+        builder_deterministic_pkgs -> builder_multisign;
+        builder_deterministic_iso -> builder_multisign;
+
+        builder_decentralized [label="Fully Decentralized Binary Production!"];
+        builder_multisign -> builder_decentralized;
+
+        //builder_testing;
+        //builder_CI;
+
+    }
+
+
+    // Distros, installation, pre-configuration, additional features
+
+    { node [fillcolor=3, color=3];
+
+        template_fc21 [label="Fedora 21 Template"];
+
+        template_community [label="Community-contributed (semi-trusted) templates"];
+        builder_compartmentalization -> template_community;
+        builder_defensive_template_packaging -> template_community;
+
+        template_debian_7 [label="Debian 7 template"];
+        template_debian_8 [label="Debian 8 template"];
+        template_whonix_9 [label="Whonix 9 template"];
+        template_debian_7 -> template_whonix_9;
+
+        // Not-yet-implemented features follow...
+        node [style="bold,rounded", penwidth=3];
+
+        template_whonix_10 [label="Whonix 10 template"];
+        template_whonix_9 -> template_whonix_10;
+
+        template_community -> {
+            template_debian_7,
+            template_debian_8,
+            template_whonix_9
+        }
+
+        preconf_tor [label="Out of the box\nTor setup"];
+        preconf_install -> preconf_tor;
+        template_whonix_10 -> preconf_tor;
+
+        preconf_email_gpg [label="Out of the box\nThunderbird + Split GPG"];
+        preconf_install -> preconf_email_gpg;
+
+        ux_magic_mime [label="Smart MIME handlers"];
+        ux_gui_improvements [label="Improved UX/UI"];
+
+        // Not-yet-fully-decided features follow...
+        // ------------------------------------------
+        node [style="dashed,rounded", penwidth=2];
+
+    }
+
+    // Releases definitions
+    // ------------------------------
+
+    compound=true;
+    fontcolor=gray;
+    color=lightgray;
+
+    subgraph cluster_r3_0 {
+        label="Qubes OS 3.0 (Spring/Summer 2015)";
+        color=black;
+        fontcolor=black;
+        _r3_0 [style=invisible];
+
+        core_HAL;
+        hvisor_Xen44;
+        core_qrexec2;
+        builder_compartmentalization; 
+        builder_defensive_template_packaging;
+        template_fc21;
+        subgraph cluster_r3_0_community_templates {
+            label="";
+            style=dotted;
+            color=gray;
+            template_community;
+            template_debian_7;
+            template_debian_8;
+            template_whonix_9;
+        }
+        { rank=same; template_fc21; template_community; }
+    }
+
+    subgraph cluster_r3_1 {
+        label="Qubes OS 3.1 (Summer/Fall 2015)";
+        _r3_1 [style=invisible];
+
+        core_mgmt;
+        preconf_install;
+        builder_defensive_template_installation;
+
+        template_whonix_10;
+        core_UEFI_boot;
+    }
+
+    subgraph cluster_r3_2 {
+        label="Qubes OS 3.2 (Fall/Winter 2015)";
+        _r3_2 [style=invisible];
+
+        subgraph cluster_r3_2_preconf_profiles {
+            label="";
+            style=dotted;
+            color=gray;
+            preconf_tor;
+            preconf_email_gpg;
+        }
+
+        ux_magic_mime;
+        ux_gui_improvements;
+    }
+
+    subgraph cluster_r3_3 {
+        label="Qubes OS 3.3";
+        _r3_3 [style=invisible];
+ 
+        builder_deterministic_pkgs;
+        builder_deterministic_dom0_distro;
+        builder_deterministic_vm_distros;
+        builder_deterministic_iso;
+        builder_multisign;
+        builder_decentralized;
+    }
+
+   subgraph cluster_r4_0 {
+        label="Qubes OS 4.0 (Winter 2015)";
+        _r4_0 [style=invisible];
+ 
+        core_coreng;
+        hvisor_other;
+        core_qrexec_policyng;
+        core_AdminAPI;
+   }
+
+   subgraph cluster_r4_1 {
+        label="Qubes OS 4.1";
+        _r4_1 [style=invisible];
+ 
+        core_GPUpassthru;
+        core_GUIdom;
+        core_mgmt_vm;
+   }
+
+  // Release dependencies...
+  // ------------------------------
+
+  _r3_0 -> _r3_1 [style=invis];
+  _r3_1 -> _r3_2 [style=invis];
+  _r3_2 -> _r3_3 [style=invis];
+
+  _r3_1 -> _r4_0 ;
+  _r4_0 -> _r4_1 [style=invis];
+
+
+}
+
+# vim: nospell
