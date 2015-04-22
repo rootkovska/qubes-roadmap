@@ -75,6 +75,9 @@ digraph {
         builder_defensive_template_installation
             [label="Defensive Templates Installation"];
 
+        core_unified_vm_packaging [label="Unified Templates/VM/Backups packaging"];
+        core_coreng -> core_unified_vm_packaging;
+
         // Not-yet-fully-decided features follow...
         // ------------------------------------------
         node [style="dashed,rounded", penwidth=2];
@@ -227,6 +230,7 @@ digraph {
         hvisor_other;
         core_qrexec_policyng;
         core_AdminAPI;
+        core_unified_vm_packaging;
    }
 
    subgraph cluster_r4_1 {
