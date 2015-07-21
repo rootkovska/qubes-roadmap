@@ -117,6 +117,8 @@ digraph {
     { node [fillcolor=3, color=3];
 
         template_fc21 [label="Fedora 21 Template"];
+        gui_fc22 [label="Fedora 22 GUI/desktop"];
+        core_GUIdom -> gui_fc22;
 
         template_community [label="Community-contributed (semi-trusted) templates"];
         builder_compartmentalization -> template_community;
@@ -246,6 +248,7 @@ digraph {
  
         core_GPUpassthru;
         core_GUIdom;
+        gui_fc22;
         core_mgmt_vm;
         core_StorageDom;
         dom0_minimal_distro;
