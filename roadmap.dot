@@ -53,6 +53,10 @@ digraph {
         core_GUIdom [label="Separate GUI domain"];
         core_AdminAPI -> core_GUIdom; 
         core_GPUpassthru -> core_GUIdom;
+        hw_TrustedBoot [label="Trusted Boot"];
+        core_StorageDom [label="Untrusted Storage domain"];
+        core_GUIdom -> core_StorageDom;
+        hw_TrustedBoot -> core_StorageDom;
 
         hvisor_other [label="Alternative hypervisors/VMMs"];
         core_HAL -> hvisor_other;
@@ -148,6 +152,9 @@ digraph {
         // Not-yet-fully-decided features follow...
         // ------------------------------------------
         node [style="dashed,rounded", penwidth=2];
+        dom0_minimal_distro [label="Minimal Dom0 distro"];
+        core_StorageDom -> dom0_minimal_distro;
+
 
     }
 
@@ -240,6 +247,8 @@ digraph {
         core_GPUpassthru;
         core_GUIdom;
         core_mgmt_vm;
+        core_StorageDom;
+        dom0_minimal_distro;
    }
 
   // Release dependencies...
