@@ -12,3 +12,11 @@ This is a very high-level view of the planned tasks -- for more details, take a
 look at our ticketing system:
 
 https://github.com/QubesOS/qubes-issues/milestones
+
+![Qubes Roadmap](https://rootkovska.github.io/qubes-roadmap/roadmap.png)
+
+Also avilable as [a PDF](https://rootkovska.github.io/qubes-roadmap/roadmap.pdf).
+
+This repository, as any other related to the Qubes OS Project, as well as the
+resulting files (linked above), can be verified by checking the signatures on
+the respective git tags (either for the master or gh-branch).
