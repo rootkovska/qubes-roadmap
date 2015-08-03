@@ -44,15 +44,19 @@ digraph {
         core_UEFI_boot [label="UEFI Boot"];
         hvisor_Xen44 -> core_UEFI_boot;
 
+        core_hvm_DriverDomains [label="HW virtualized driver domains"];
+        core_coreng -> core_hvm_DriverDomains;
+
+        core_GPUpassthru [label="GPU-passthru"];
+        core_GUIdom [label="Separate GUI domain"];
+        core_AdminAPI -> core_GUIdom; 
+        core_GPUpassthru -> core_GUIdom;
+        core_hvm_DriverDomains -> core_GUIdom;
+
         // Not-yet-fully-decided features follow...
         // ------------------------------------------
         node [style="dashed,rounded", penwidth=2];
 
-        core_GPUpassthru [label="GPU-passthru"];
-
-        core_GUIdom [label="Separate GUI domain"];
-        core_AdminAPI -> core_GUIdom; 
-        core_GPUpassthru -> core_GUIdom;
         hw_TrustedBoot [label="Trusted Boot"];
         core_StorageDom [label="Untrusted Storage domain"];
         core_GUIdom -> core_StorageDom;
@@ -117,9 +121,6 @@ digraph {
     { node [fillcolor=3, color=3];
 
         template_fc21 [label="Fedora 21 Template"];
-        gui_fc22 [label="Fedora 22 GUI/desktop"];
-        core_GUIdom -> gui_fc22;
-
         template_community [label="Community-contributed (semi-trusted) templates"];
         builder_compartmentalization -> template_community;
         builder_defensive_template_packaging -> template_community;
@@ -131,6 +132,10 @@ digraph {
 
         // Not-yet-implemented features follow...
         node [style="bold,rounded", penwidth=3];
+
+        gui_fc22 [label="Fedora 22 GUI/desktop"];
+        core_GUIdom -> gui_fc22;
+
 
         template_whonix_10 [label="Whonix 10 template"];
         template_whonix_9 -> template_whonix_10;
@@ -151,10 +156,12 @@ digraph {
         ux_magic_mime [label="Smart MIME handlers"];
         ux_gui_improvements [label="Improved UX/UI"];
 
+        dom0_minimal_distro [label="Minimal & hardened Dom0 distro"];
+        core_GUIdom -> dom0_minimal_distro;
+
         // Not-yet-fully-decided features follow...
         // ------------------------------------------
         node [style="dashed,rounded", penwidth=2];
-        dom0_minimal_distro [label="Minimal Dom0 distro"];
         core_StorageDom -> dom0_minimal_distro;
 
 
@@ -240,6 +247,7 @@ digraph {
         core_qrexec_policyng;
         core_AdminAPI;
         core_unified_vm_packaging;
+        core_hvm_DriverDomains;
    }
 
    subgraph cluster_r4_1 {
