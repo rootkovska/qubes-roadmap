@@ -1,10 +1,12 @@
-all: roadmap.pdf roadmap.png
+TIMESTAMP := $(shell date -I)
 
-roadmap.pdf: roadmap.dot
-	dot -Tpdf roadmap.dot -o roadmap.pdf
+all: roadmap-$(TIMESTAMP).pdf roadmap-$(TIMESTAMP).png
 
-roadmap.png: roadmap.dot
-	dot -Tpng roadmap.dot -o roadmap.png
+roadmap-$(TIMESTAMP).pdf: roadmap.dot
+	dot -Tpdf roadmap.dot -o roadmap-$(TIMESTAMP).pdf
+
+roadmap-$(TIMESTAMP).png: roadmap.dot
+	dot -Tpng roadmap.dot -o roadmap-$(TIMESTAMP).png
 
 
 clean:
