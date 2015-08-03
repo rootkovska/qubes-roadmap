@@ -3,7 +3,7 @@ Roadmap for Qubes OS
 
 This repository is used to track milestones/roadmap/features for Qubes OS.
 
-![Qubes Roadmap](https://rootkovska.github.io/qubes-roadmap/roadmap.png)
+<img src="https://rootkovska.github.io/qubes-roadmap/roadmap.png">
 
 Also avilable as [a PDF](https://rootkovska.github.io/qubes-roadmap/roadmap.pdf).
 
