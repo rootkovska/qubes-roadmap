@@ -136,7 +136,6 @@ digraph {
         gui_fc22 [label="Fedora 22 GUI/desktop"];
         core_GUIdom -> gui_fc22;
 
-
         template_whonix_10 [label="Whonix 10 template"];
         template_whonix_9 -> template_whonix_10;
 
@@ -164,6 +163,8 @@ digraph {
         node [style="dashed,rounded", penwidth=2];
         core_StorageDom -> dom0_minimal_distro;
 
+        gui_other_distro [label="Other distro/OS as GUI domain?"];
+        core_GUIdom ->gui_other_distro;
 
     }
 
@@ -257,6 +258,7 @@ digraph {
         core_GPUpassthru;
         core_GUIdom;
         gui_fc22;
+        gui_other_distro;
         core_mgmt_vm;
         core_StorageDom;
         dom0_minimal_distro;
